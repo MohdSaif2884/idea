@@ -1,26 +1,121 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Minimal App</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Travelly — Book Hotels, Cabs & Guides</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
-      body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; background:#f6f8fa; }
-      .app-container { background:#fff; padding:24px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.08); text-align:center; }
-      .title { font-size:20px; margin:0 0 8px; color:#111827; }
-      .desc { color:#6b7280; margin:0; }
-      .link-row { margin-top: 16px; display: flex; justify-content: center; }
-      .link-button { display:inline-block; padding:10px 14px; border-radius:8px; background:#2563eb; color:#fff; text-decoration:none; box-shadow:0 2px 8px rgba(37,99,235,0.35); transition:transform .1s ease, box-shadow .1s ease; }
-      .link-button:focus, .link-button:hover { transform:translateY(-1px); box-shadow:0 6px 16px rgba(37,99,235,0.35); }
+      .hero-bg { background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=5c5a0b7b0b6b5fbd3a2b9f5c2b5cfb8a'); background-size:cover; background-position:center; }
+      .carousel-slide { display:none; }
+      .carousel-slide.active { display:block; }
     </style>
   </head>
-  <body>
-    <div class="app-container">
-      <h1 class="title">App is running</h1>
-      <p class="desc">Your minimal Node static server is serving this page.</p>
-      <div class="link-row">
-        <a class="link-button" href="./about.html" aria-label="Go to About Us page">About Us</a>
+  <body class="min-h-screen flex flex-col bg-slate-50 font-sans text-slate-900">
+    <!-- Navbar -->
+    <header class="bg-white shadow-sm">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="flex justify-between items-center h-16">
+          <a href="./index.html" class="font-semibold text-xl text-blue-600">Travelly</a>
+          <nav class="hidden md:flex gap-6 items-center text-slate-700">
+            <a href="./index.html" class="hover:text-slate-900">Home</a>
+            <a href="./hotels.html" class="hover:text-slate-900">Hotels</a>
+            <a href="./cabs.html" class="hover:text-slate-900">Cabs</a>
+            <a href="./guides.html" class="hover:text-slate-900">Guides</a>
+            <a href="./packages.html" class="hover:text-slate-900">Packages</a>
+            <a href="./promotions.html" class="hover:text-slate-900">Offers</a>
+          </nav>
+          <div class="hidden md:flex gap-3">
+            <a href="#" class="px-3 py-1 rounded-md text-sm border border-slate-200">Login</a>
+            <a href="#" class="px-3 py-1 rounded-md text-sm bg-blue-600 text-white">Sign up</a>
+          </div>
+          <button id="mobileToggle" class="md:hidden">☰</button>
+        </div>
       </div>
-    </div>
+      <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+        <div class="px-4 py-2 flex flex-col gap-2">
+          <a href="./hotels.html" class="py-2">Hotels</a>
+          <a href="./cabs.html" class="py-2">Cabs</a>
+          <a href="./guides.html" class="py-2">Guides</a>
+          <a href="./packages.html" class="py-2">Packages</a>
+          <a href="./promotions.html" class="py-2">Offers</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <main class="flex-1">
+      <section class="hero-bg h-[60vh] flex items-center">
+        <div class="max-w-6xl mx-auto px-4 w-full">
+          <div class="bg-white/80 backdrop-blur-sm rounded-xl p-6 sm:p-10 max-w-3xl">
+            <h1 class="text-3xl sm:text-4xl font-bold text-slate-900">Discover & Book Your Perfect Trip</h1>
+            <p class="mt-2 text-slate-700">Search hotels, book cabs, and hire guides — all in one place.</p>
+
+            <form id="searchForm" class="mt-6 grid grid-cols-1 sm:grid-cols-4 gap-3">
+              <input id="destination" name="destination" class="p-3 rounded-md border border-slate-200" placeholder="Destination (city, hotel)" />
+              <input id="date" name="date" type="date" class="p-3 rounded-md border border-slate-200" />
+              <select id="guests" name="guests" class="p-3 rounded-md border border-slate-200">
+                <option value="1">1 guest</option>
+                <option value="2">2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4 guests</option>
+              </select>
+              <div class="flex">
+                <button type="submit" class="w-full bg-blue-600 text-white rounded-md px-4">Book Your Trip</button>
+              </div>
+            </form>
+
+            <div class="mt-4 text-sm text-slate-600">Or explore: <a href="./hotels.html" class="text-blue-600">Hotels</a> · <a href="./cabs.html" class="text-blue-600">Cabs</a> · <a href="./guides.html" class="text-blue-600">Guides</a></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Promotions carousel preview -->
+      <section class="max-w-6xl mx-auto px-4 py-8">
+        <h2 class="text-xl font-semibold mb-4">Promotions</h2>
+        <div id="promoPreview" class="rounded-lg overflow-hidden bg-white shadow">
+          <div class="p-4" id="promoContainer"></div>
+        </div>
+      </section>
+
+      <!-- Quick features -->
+      <section class="max-w-6xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div class="p-6 bg-white rounded-lg shadow"> <h3 class="font-semibold">All-in-one booking</h3><p class="text-sm text-slate-600 mt-2">Hotels, cabs and guides in a single flow.</p></div>
+          <div class="p-6 bg-white rounded-lg shadow"> <h3 class="font-semibold">Verified partners</h3><p class="text-sm text-slate-600 mt-2">Trusted hotels and experienced guides.</p></div>
+          <div class="p-6 bg-white rounded-lg shadow"> <h3 class="font-semibold">Secure payments</h3><p class="text-sm text-slate-600 mt-2">Payments with major providers and refund policies.</p></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-8">
+      <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between gap-6">
+        <div>
+          <div class="text-xl font-semibold text-blue-600">Travelly</div>
+          <p class="text-sm text-slate-600 mt-2">Book hotels, cabs and guides with ease.</p>
+        </div>
+        <div class="flex gap-6">
+          <div>
+            <h4 class="font-semibold">Company</h4>
+            <ul class="text-sm text-slate-600 mt-2">
+              <li><a href="#">About</a></li>
+              <li><a href="#">Careers</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold">Support</h4>
+            <ul class="text-sm text-slate-600 mt-2">
+              <li><a href="#">Help center</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./assets/scripts.js"></script>
   </body>
 </html>
