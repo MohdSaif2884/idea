@@ -222,4 +222,99 @@ window.addEventListener('DOMContentLoaded', ()=>{
 
   // Promo auto-rotate
   setInterval(()=>{ nextPromo(); }, 6000);
+
+  // Budget planner form handler (if present on page)
+  const budgetForm = document.getElementById('budgetForm');
+  if(budgetForm){
+    budgetForm.addEventListener('submit', (ev)=>{
+      ev.preventDefault();
+      const budget = Number(document.getElementById('totalBudget').value || 0);
+      const days = Number(document.getElementById('duration').value || 2);
+      const guests = Number(document.getElementById('guests').value || 2);
+      if(!budget || budget <= 0){ alert('Please enter a valid budget'); return; }
+      const suggestions = findPlacesWithinBudget(budget, days, guests);
+      renderBudgetResults(suggestions, budget);
+      // scroll to results
+      const resultsEl = document.getElementById('budgetResults'); if(resultsEl) resultsEl.scrollIntoView({behavior:'smooth'});
+    });
+  }
+});
+
+// Budget planner data and helpers
+const PLACES = [
+  { id:'goa', name:'Goa Beachside', desc:'Sandy beaches and lively nightlife', hotelPerNight:2500, cabPerDay:600, guidePerDay:800, foodPerPersonPerDay:600, activitiesPerDay:700 },
+  { id:'manali', name:'Manali Retreat', desc:'Mountains, trekking and nature', hotelPerNight:3000, cabPerDay:800, guidePerDay:900, foodPerPersonPerDay:500, activitiesPerDay:800 },
+  { id:'jaipur', name:'Heritage Jaipur', desc:'Palaces, forts and culinary tours', hotelPerNight:2000, cabPerDay:500, guidePerDay:700, foodPerPersonPerDay:400, activitiesPerDay:600 },
+  { id:'kerala', name:'Kerala Backwaters', desc:'Houseboats, spices and calm backwaters', hotelPerNight:2800, cabPerDay:700, guidePerDay:850, foodPerPersonPerDay:550, activitiesPerDay:750 }
+];
+
+function estimatePlaceCost(place, days, guests){
+  const hotel = place.hotelPerNight * days;
+  const cab = place.cabPerDay * days;
+  const guide = place.guidePerDay * days;
+  const food = place.foodPerPersonPerDay * guests * days;
+  const activities = place.activitiesPerDay * days;
+  const total = hotel + cab + guide + food + activities;
+  return { hotel, cab, guide, food, activities, total };
+}
+
+function findPlacesWithinBudget(budget, days, guests){
+  const results = PLACES.map(p=>({ ...p, est: estimatePlaceCost(p, days, guests) }));
+  // Filter by budget
+  let within = results.filter(r=>r.est.total <= budget);
+  if(within.length === 0){
+    // return top 3 closest to budget
+    return results.sort((a,b)=>Math.abs(a.est.total - budget) - Math.abs(b.est.total - budget)).slice(0,3);
+  }
+  // return sorted by how well they utilize budget (desc)
+  return within.sort((a,b)=>b.est.total - a.est.total).slice(0,6);
+}
+
+function renderBudgetResults(list, budget){
+  const container = document.getElementById('budgetResults'); if(!container) return; container.innerHTML = '';
+  list.forEach(p=>{
+    const breakdown = p.est;
+    const percent = Math.min(100, Math.round((breakdown.total / budget) * 100));
+    const card = createHTML(`
+      <div class="bg-white rounded-lg shadow p-4">
+        <div class="flex justify-between items-start gap-4">
+          <div>
+            <h3 class="font-semibold">${p.name}</h3>
+            <div class="text-sm text-slate-600">${p.desc}</div>
+            <div class="mt-2 text-sm text-slate-700">Estimated total: <span class="font-semibold">₹${breakdown.total}</span></div>
+            <div class="mt-2 w-full bg-slate-100 rounded-full h-2 overflow-hidden"><div style="width:${percent}%" class="h-2 bg-blue-600"></div></div>
+          </div>
+          <div class="text-right">
+            <div class="text-sm text-slate-500">Used of budget</div>
+            <div class="text-lg font-semibold">${percent}%</div>
+          </div>
+        </div>
+        <div class="mt-3 grid grid-cols-2 gap-2 text-sm text-slate-600">
+          <div>Hotel: ₹${breakdown.hotel}</div>
+          <div>Cab: ₹${breakdown.cab}</div>
+          <div>Guide: ₹${breakdown.guide}</div>
+          <div>Food: ₹${breakdown.food}</div>
+          <div class="col-span-2">Activities: ₹${breakdown.activities}</div>
+        </div>
+        <div class="mt-4 flex gap-3">
+          <button class="book-package bg-blue-600 text-white px-3 py-2 rounded" data-place="${p.id}" data-total="${breakdown.total}">Book Package</button>
+          <button class="view-details px-3 py-2 rounded border" data-place="${p.id}">View Details</button>
+        </div>
+      </div>
+    `);
+    container.appendChild(card);
+  });
+}
+
+// Budget-related click handlers
+document.addEventListener('click', (e)=>{
+  if(e.target.matches('.book-package')){
+    const place = e.target.dataset.place; const total = e.target.dataset.total;
+    alert('Proceed to booking for '+place+' — estimated total ₹'+total+' (demo)');
+    // Navigate to package builder as next step
+    window.location.href = './packages.html';
+  }
+  if(e.target.matches('.view-details')){
+    const place = e.target.dataset.place; alert('Show details for '+place+' (demo)');
+  }
 });
