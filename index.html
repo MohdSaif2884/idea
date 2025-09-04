@@ -9,12 +9,18 @@
       .app-container { background:#fff; padding:24px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.08); text-align:center; }
       .title { font-size:20px; margin:0 0 8px; color:#111827; }
       .desc { color:#6b7280; margin:0; }
+      .link-row { margin-top: 16px; display: flex; justify-content: center; }
+      .link-button { display:inline-block; padding:10px 14px; border-radius:8px; background:#2563eb; color:#fff; text-decoration:none; box-shadow:0 2px 8px rgba(37,99,235,0.35); transition:transform .1s ease, box-shadow .1s ease; }
+      .link-button:focus, .link-button:hover { transform:translateY(-1px); box-shadow:0 6px 16px rgba(37,99,235,0.35); }
     </style>
   </head>
   <body>
     <div class="app-container">
       <h1 class="title">App is running</h1>
       <p class="desc">Your minimal Node static server is serving this page.</p>
+      <div class="link-row">
+        <a class="link-button" href="./about.html" aria-label="Go to About Us page">About Us</a>
+      </div>
     </div>
   </body>
 </html>
