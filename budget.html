@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Budget Planner — Travelly</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-50 font-sans">
+    <header class="bg-white shadow-sm">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <a href="./index.html" class="text-blue-600 font-semibold">Travelly</a>
+        <nav class="hidden md:flex gap-6 items-center text-slate-700">
+          <a href="./index.html" class="hover:text-slate-900">Home</a>
+          <a href="./hotels.html" class="hover:text-slate-900">Hotels</a>
+          <a href="./cabs.html" class="hover:text-slate-900">Cabs</a>
+          <a href="./guides.html" class="hover:text-slate-900">Guides</a>
+          <a href="./packages.html" class="hover:text-slate-900">Packages</a>
+          <a href="./budget.html" class="hover:text-slate-900">Budget Planner</a>
+          <a href="./promotions.html" class="hover:text-slate-900">Offers</a>
+        </nav>
+        <div class="hidden md:flex gap-3">
+          <a href="#" class="px-3 py-1 rounded-md text-sm border border-slate-200">Login</a>
+          <a href="#" class="px-3 py-1 rounded-md text-sm bg-blue-600 text-white">Sign up</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-12">
+      <h1 class="text-2xl font-semibold mb-4">Plan Your Trip By Budget</h1>
+
+      <div class="bg-white rounded-lg shadow p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <form id="budgetForm" class="lg:col-span-1 space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Total Budget (₹)</label>
+            <input id="totalBudget" type="number" min="0" placeholder="e.g. 10000" class="w-full p-3 border rounded-md" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Duration</label>
+            <select id="duration" class="w-full p-3 border rounded-md">
+              <option value="2">Weekend (2 days)</option>
+              <option value="3">3 Days</option>
+              <option value="7">1 Week</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Guests</label>
+            <select id="guests" class="w-full p-3 border rounded-md">
+              <option value="1">1 guest</option>
+              <option value="2" selected>2 guests</option>
+              <option value="3">3 guests</option>
+              <option value="4">4 guests</option>
+            </select>
+          </div>
+          <div>
+            <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-md">Find Trips Within Budget</button>
+          </div>
+        </form>
+
+        <section id="budgetInfo" class="lg:col-span-2">
+          <div class="mb-4">
+            <h2 class="font-semibold">Suggested Places</h2>
+            <p class="text-sm text-slate-600">AI-powered suggestions based on your budget with estimated expense breakdown.</p>
+          </div>
+
+          <div id="budgetResults" class="space-y-4">
+            <!-- results -->
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="bg-white border-t py-6 mt-8">
+      <div class="max-w-6xl mx-auto px-4 text-sm text-slate-600">© 2025 Travelly</div>
+    </footer>
+
+    <script src="./assets/scripts.js"></script>
+  </body>
+</html>
